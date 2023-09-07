@@ -1,6 +1,4 @@
 /node_modules/*
-public/sw.js
-public/workbox-*
 /.next
 /yarn.lock
 ./package-lock.json
