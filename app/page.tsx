@@ -2,9 +2,13 @@
 
 import { QRCodeSVG } from "qrcode.react";
 import { useEffect, useState } from "react";
+import { QrReader } from "react-qr-reader";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [baseUrl, setBaseUrl] = useState("");
+  const [result, setResult] = useState("No result");
+  const router = useRouter();
 
   useEffect(() => {
     // Check if window is defined (i.e., running in the browser)
@@ -17,40 +21,27 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen grid place-items-center place-content-center grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16 p-6">
-      <div className="flex flex-col gap-4 items-center">
-        <span className="text-lg font-bold">Page 1</span>
-        <QRCodeSVG
-          value={`${baseUrl}/page1`}
-          className="w-[150px] h-[150px] lg:w-[300px] lg:h-[300px]"
-          bgColor={"#ffffff"}
-          fgColor={"#000000"}
-          level={"L"}
-          includeMargin={false}
-        />
-      </div>
-      <div className="flex flex-col gap-4 items-center">
-        <span className="text-lg font-bold">Page 2</span>
-        <QRCodeSVG
-          value={`${baseUrl}/page2`}
-          className="w-[150px] h-[150px] lg:w-[300px] lg:h-[300px]"
-          bgColor={"#ffffff"}
-          fgColor={"#000000"}
-          level={"L"}
-          includeMargin={false}
-        />
-      </div>
-      <div className="flex flex-col gap-4 items-center">
-        <span className="text-lg font-bold">Page 3</span>
-        <QRCodeSVG
-          value={`${baseUrl}/page3`}
-          className="w-[150px] h-[150px] lg:w-[300px] lg:h-[300px]"
-          bgColor={"#ffffff"}
-          fgColor={"#000000"}
-          level={"L"}
-          includeMargin={false}
-        />
-      </div>
+    <main>
+      <QrReader
+        onResult={(result: any, error) => {
+          if (!!result) {
+            console.log(result.text);
+            setResult(result.text);
+            if (
+              result.text.includes("http://") ||
+              result.text.includes("https://")
+            ) {
+            }
+            router.push(result.text);
+          }
+
+          if (!!error) {
+            // console.info(error);
+          }
+        }}
+        constraints={{ facingMode: "environment" }}
+      />
+      <div>{result}</div>
     </main>
   );
 }

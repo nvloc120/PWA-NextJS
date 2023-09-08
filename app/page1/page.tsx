@@ -1,12 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 
 import * as React from "react";
+import Link from "next/link";
 
 export interface Page1Props {}
 
 export default function Page1(props: Page1Props) {
   return (
     <div className="min-h-screen">
+      <Link href="/">Go back home</Link>
       <h1 className="text-center py-8 font-bold text-3xl">Page 1</h1>
       <div className="px-4 lg:px-40">
         <p>
